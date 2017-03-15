@@ -42,8 +42,6 @@ export class Question {
 
 @Model({extends:'Interaction'})
 export class Quizz extends Interaction {
-    @Property({ type: "number" })
-    delay: number;
     @Reference({cardinality: 'many', item: 'Question'})
     question: Question[];
 }
