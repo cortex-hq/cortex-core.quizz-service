@@ -1,0 +1,60 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+
+		{
+			"name": "Debug",
+			"type": "node",
+			"request": "launch",
+			"smartStep": true,
+			"program": "${workspaceRoot}/src/index.ts",
+			"stopOnEntry": false,
+			"preLaunchTask": "compile-ts",
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"runtimeExecutable": null,
+			"runtimeArgs": [],
+			"env": {
+				"VULCAIN_ENV_MODE": "local",
+				"VULCAIN_ENV": "test",
+				"VULCAIN_SERVICE_NAME": "cortex-core.quizz-service",
+				"VULCAIN_SERVICE_VERSION": "1.0",
+				// "VULCAIN_SERVER": "cortex1:8080",
+                		"VULCAIN_TOKEN": "115232d2-5f43-47b6-9b64-1e3393f2c642",
+				"NODE_ENV": "development"
+			},
+			"console": "internalConsole",
+			"sourceMaps": true,
+			"outDir": "${workspaceRoot}/dist"
+		},
+		{
+			"name": "Test",
+			"type": "node",
+			"request": "launch",
+			"smartStep": true,
+			"program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
+			"stopOnEntry": false,
+			"preLaunchTask": "compile-test",
+			"args": [
+				"${workspaceRoot}/dist-test/**/*.js"
+			],
+			"cwd": "${workspaceRoot}",
+			"runtimeExecutable": null,
+			"runtimeArgs": [],
+			"env": {
+				"VULCAIN_ENV": "test",
+				"VULCAIN_SERVICE_NAME": "cortex-core.quizz-service",
+				"VULCAIN_SERVICE_VERSION": "1.0"
+			},
+			"console": "internalConsole",
+			"sourceMaps": true,
+			"outDir": "${workspaceRoot}/dist-test"
+		},
+		{
+			"name": "Attach",
+			"type": "node",
+			"request": "attach",
+			"port": 5858
+		}
+	]
+}
