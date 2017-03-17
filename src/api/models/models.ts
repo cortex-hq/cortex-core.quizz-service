@@ -62,7 +62,7 @@ export class Interaction2<T> {
     id: string;
     @Property({ type: "number" })
     delay: number;
-    @Reference({cardinality: 'many', item: '?'}) // TODO : Will it be relevant to set this vulcain attribute at this time.
+    @Reference({ cardinality: 'many', item: '?' }) // TODO : Will it be relevant to set this vulcain attribute at this time.
     actions: T[];
 }
 
@@ -76,7 +76,7 @@ export class Question2 extends Action {
     required: boolean = false;
 }
 
-@Model({extends:'Interaction'})
+@Model({ extends: 'Interaction' })
 export class Quizz2 extends Interaction2<Question2> {
 }
 
@@ -92,15 +92,13 @@ export class Question {
     required: boolean = false;
 }
 
-@Model({extends:'Interaction'})
+@Model({ extends: 'Interaction' })
 export class Quizz extends Interaction {
-    @Property({ type: "number" })
-    delay: number;
-    @Reference({cardinality: 'many', item: 'Question'})
+    @Reference({ cardinality: 'many', item: 'Question' })
     question: Question[];
 }
 
-@Model({extends:'Interaction'})
+@Model({ extends: 'Interaction' })
 export class Activity extends Interaction {
     @Property({ type: "string", required: true })
     type: string;
@@ -108,7 +106,7 @@ export class Activity extends Interaction {
     label: string;
 }
 
-@Model({extends:'Interaction'})
+@Model({ extends: 'Interaction' })
 export class Instructions extends Interaction {
     @Property({ type: "string", required: true })
     type: string;
@@ -116,7 +114,7 @@ export class Instructions extends Interaction {
     text: string;
 }
 
-@Model({description: 'A simple step of a care plan. It can be followed a pre-established plan or scheduling'})
+@Model({ description: 'A simple step of a care plan. It can be followed a pre-established plan or scheduling' })
 export class Step {
     @Property({ type: "string", required: true, unique: true, isKey: true })
     id: string;
@@ -124,7 +122,7 @@ export class Step {
     // startDate: string;
     // @Property({ type: "date-iso8601", required: true, })
     // endDate: string;
-    @Reference({cardinality: 'one', item: 'Interaction'})
+    @Reference({ cardinality: 'one', item: 'Interaction' })
     Test: Interaction;
 }
 
@@ -150,17 +148,17 @@ export class Exam {
     score: number;
     @Property({ type: "boolean", required: true })
     completed: boolean;
-    @Reference({cardinality: 'one', item: 'Interaction'})
+    @Reference({ cardinality: 'one', item: 'Interaction' })
     test: Interaction;
-    @Reference({cardinality: 'many', item: 'Answer'})
-    answers:Answer[];
+    @Reference({ cardinality: 'many', item: 'Answer' })
+    answers: Answer[];
 }
 
 @Model()
 export class PlannedTask {
     @Property({ type: "string", required: true, unique: true, isKey: true })
     id: string;
-    @Reference({cardinality: 'many', item: 'Step'})
+    @Reference({ cardinality: 'many', item: 'Step' })
     step: Step[];
 }
 
@@ -172,7 +170,7 @@ export class CarePlan {
     // startDate: string;
     // @Property({ type: "date-iso8601", required: true, })
     // endDate: string;
-    @Reference({cardinality: 'one', item: 'PlannedTask'})
+    @Reference({ cardinality: 'one', item: 'PlannedTask' })
     planner: PlannedTask;
 }
 
@@ -184,14 +182,14 @@ export class Motivation {
     description: string;
 }
 
-@Model({extends:'Motivation'})
+@Model({ extends: 'Motivation' })
 export class ConcussionProtocol extends Motivation {
-   @Reference({cardinality: 'one', item: 'Game', required: true})
-   game: Game;
-   @Property({ type: "string", required: true })
-   playerId: string;
-   @Property({ type: "arrayOf", items:'string', required: true })
-   voters: string[];
+    @Reference({ cardinality: 'one', item: 'Game', required: true })
+    game: Game;
+    @Property({ type: "string", required: true })
+    playerId: string;
+    @Property({ type: "arrayOf", items: 'string', required: true })
+    voters: string[];
 }
 
 @Model()
@@ -200,11 +198,11 @@ export class FollowUp {
     id: string;
     @Property({ type: "date-iso8601", required: true })
     startDate: string;
-    @Reference({cardinality: 'many', item: 'Exam'})
+    @Reference({ cardinality: 'many', item: 'Exam' })
     examens: Exam[];
-    @Reference({cardinality: 'one', item: 'CarePlan'})
+    @Reference({ cardinality: 'one', item: 'CarePlan' })
     carePlan: CarePlan;
-    @Reference({cardinality: 'one', item: 'Motivation', required: false})
+    @Reference({ cardinality: 'one', item: 'Motivation', required: false })
     motivation: Motivation;
 }
 
@@ -221,9 +219,9 @@ export class Player {
     userId: string;
     @Property({ type: "number", description: "The position of the player, its jersey number.", required: true })
     number: number;
-    @Reference({cardinality: 'many', item: 'Game'})
+    @Reference({ cardinality: 'many', item: 'Game' })
     hasPlayed: Game[];
-    @Reference({cardinality: 'many', item: 'FollowUp'})
+    @Reference({ cardinality: 'many', item: 'FollowUp' })
     followUps: FollowUp[];
 }
 
@@ -235,7 +233,7 @@ export class Season {
     startDate: string;
     @Property({ type: "date-iso8601", required: true, })
     endDate: string;
-    @Reference({cardinality: 'many', item: 'Game'})
+    @Reference({ cardinality: 'many', item: 'Game' })
     games: Game[];
     @Property({ type: "string", required: true })
     sportId: string;
@@ -262,9 +260,9 @@ export class Team {
     id: string;
     @Property({ type: "string", required: true })
     sportId: string;
-    @Reference({cardinality: 'many', item: 'Player'})
+    @Reference({ cardinality: 'many', item: 'Player' })
     players: Player[];
-    @Reference({cardinality: 'one', item: 'Coach'})
+    @Reference({ cardinality: 'one', item: 'Coach' })
     coach: Coach;
 }
 
