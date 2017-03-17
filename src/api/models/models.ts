@@ -4,13 +4,29 @@ import { Model, Property, Reference, Validator } from "vulcain-corejs";
 // Cortex model
 // -----------------------------------------------------------
 
+
+// -----------------------------------------------------------
+// Sport
+// -----------------------------------------------------------
+
+// -----------------------------------------------------------
+// CarePlan
+// -----------------------------------------------------------
+
+// -----------------------------------------------------------
+// Exam
+// -----------------------------------------------------------
+
+
+
+
 @Model()
 export class Game {
     @Property({ type: "string", required: true, unique: true, isKey: true })
     id: string;
     @Property({ type: "date-iso8601", required: true })
     date: string;
-    @Property({ type: "string", required: true })
+    @Property({ type: "string", required: true })  //TOO : Replace with GeoLoc.
     where: string;
     @Property({ type: "number", required: true, })
     homeScore: number;
@@ -18,6 +34,10 @@ export class Game {
     awayScore: number;
     @Property({ type: "boolean", required: true })
     completed: boolean;
+    @Property({ type: "string", required: true })
+    homeTeamId: string;
+    @Property({ type: "string", required: true })
+    awayTeamId: string;
 }
 
 @Model()
@@ -26,6 +46,38 @@ export class Interaction {
     id: string;
     @Property({ type: "number" })
     delay: number;
+}
+
+
+export class Action {
+    @Property({ type: "string", required: true, unique: true, isKey: true })
+    id: string;
+
+    @Property({ type: "string", required: true })
+    label: string;
+}
+
+export class Interaction2<T> {
+    @Property({ type: "string", required: true, unique: true, isKey: true })
+    id: string;
+    @Property({ type: "number" })
+    delay: number;
+    @Reference({cardinality: 'many', item: '?'}) // TODO : Will it be relevant to set this vulcain attribute at this time.
+    actions: T[];
+}
+
+@Model()
+export class Question2 extends Action {
+    @Property({ type: "string", required: true })
+    type: string;
+    @Property({ type: "string", required: true })
+    label: string;
+    @Property({ type: "boolean", required: false, defaultValue: 'false' })
+    required: boolean = false;
+}
+
+@Model({extends:'Interaction'})
+export class Quizz2 extends Interaction2<Question2> {
 }
 
 @Model()
@@ -154,17 +206,21 @@ export class FollowUp {
     carePlan: CarePlan;
     @Reference({cardinality: 'one', item: 'Motivation', required: false})
     motivation: Motivation;
-
 }
 
+// The Player entity is the representation of an user for a dedicated sport and a dedicated team.
 @Model()
 export class Player {
     @Property({ type: "string", required: true, unique: true, isKey: true })
     id: string;
     @Property({ type: "string", required: true })
-    firstName: string;
-    @Property({ type: "string", required: true, })
-    lastName: string;
+    sportId: string;
+    @Property({ type: "string", required: true })
+    teamId: string;
+    @Property({ type: "string", required: true })
+    userId: string;
+    @Property({ type: "number", description: "The position of the player, its jersey number.", required: true })
+    number: number;
     @Reference({cardinality: 'many', item: 'Game'})
     hasPlayed: Game[];
     @Reference({cardinality: 'many', item: 'FollowUp'})
@@ -181,4 +237,55 @@ export class Season {
     endDate: string;
     @Reference({cardinality: 'many', item: 'Game'})
     games: Game[];
+    @Property({ type: "string", required: true })
+    sportId: string;
+}
+
+
+@Model()
+export class Sport {
+    @Property({ type: "string", required: true, unique: true, isKey: true })
+    id: string;
+    @Property({ type: "string", required: true, unique: true })
+    label: string;
+}
+
+@Model()
+export class Coach {
+    @Property({ type: "string", required: true, unique: true, isKey: true })
+    id: string;
+}
+
+@Model()
+export class Team {
+    @Property({ type: "string", required: true, unique: true, isKey: true })
+    id: string;
+    @Property({ type: "string", required: true })
+    sportId: string;
+    @Reference({cardinality: 'many', item: 'Player'})
+    players: Player[];
+    @Reference({cardinality: 'one', item: 'Coach'})
+    coach: Coach;
+}
+
+@Model()
+export class User {
+    @Property({ type: "string", required: true, unique: true, isKey: true })
+    id: string;
+    @Property({ type: "string", required: true })
+    firstName: string;
+    @Property({ type: "string", required: true, })
+    lastName: string;
+    @Property({ type: "date-iso8601", required: true })
+    birthday: string;
+    @Property({ type: "string", required: true }) // TODO : An Enum
+    gender: string;
+    @Property({ type: "string" }) // TODO : GeoLoc
+    where: string;
+
+    // @Property({ type: "number", required: true })
+    // weight: number;
+    // @Property({ type: "number", required: true })
+    // size: number;
+    // It would be archived by a specic Exam entity instance.
 }
